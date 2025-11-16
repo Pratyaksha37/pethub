@@ -22,7 +22,15 @@ export async function POST(req) {
       { expiresIn: "1d" }
     );
 
-    return new Response(JSON.stringify({ token, user }), { status: 200 });
+    const safeUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt
+    }
+
+    return new Response(JSON.stringify({ token, user: safeUser }), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
