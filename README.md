@@ -103,15 +103,19 @@ Auth	JWT
 Maps	Google Maps API
 Hosting	Vercel
 📡 API Overview
+
 Endpoint	Method	Description	Access
-/api/auth/signup	POST	Register user	Public
-/api/auth/login	POST	Login user	Public
-/api/pets	GET	Fetch pets	Public
-/api/pets/:id	GET	Pet details	Public
-/api/pets	POST	Add pet	Admin
-/api/pets/:id	PUT	Update pet	Admin
-/api/pets/:id	DELETE	Delete pet	Admin
-/api/pets/:id/apply	POST	Apply for adoption	Auth
-/api/applications/me	GET	User’s applications	Auth
-/api/applications	GET	All applications	Admin
-/api/care/nearby	GET	Nearby pet-care centers	Auth
+
+| Endpoint               | Method | Description             | Access |
+| ---------------------- | ------ | ----------------------- | ------ |
+| `/api/auth/signup`     | POST   | Register user           | Public |
+| `/api/auth/login`      | POST   | Login user              | Public |
+| `/api/pets`            | GET    | Fetch pets              | Public |
+| `/api/pets/:id`        | GET    | Pet details             | Public |
+| `/api/pets`            | POST   | Add pet                 | Admin  |
+| `/api/pets/:id`        | PUT    | Update pet              | Admin  |
+| `/api/pets/:id`        | DELETE | Delete pet              | Admin  |
+| `/api/pets/:id/apply`  | POST   | Apply for adoption      | Auth   |
+| `/api/applications/me` | GET    | User’s applications     | Auth   |
+| `/api/applications`    | GET    | All applications        | Admin  |
+| `/api/care/nearby`     | GET    | Nearby pet-care centers | Auth   |
