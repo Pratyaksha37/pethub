@@ -8,16 +8,54 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  role         Role          @default(USER)
+  createdAt    DateTime      @default(now())
+  applications Application[]
+}
+
+model Pet {
+  id          Int           @id @default(autoincrement())
+  name        String
+  breed       String
+  age         Int
+  size        String
+  description String
+  image       String
+  status      PetStatus     @default(AVAILABLE)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  applications Application[]
+}
+
+model Application {
+  id        Int               @id @default(autoincrement())
+  userId    Int
+  petId     Int
+  status    ApplicationStatus @default(PENDING)
+  message   String?
+  createdAt DateTime          @default(now())
+  user      User              @relation(fields: [userId], references: [id])
+  pet       Pet               @relation(fields: [petId], references: [id])
 }
 
 enum Role {
   SUPERADMIN
   ADMIN
   USER
+}
+
+enum PetStatus {
+  AVAILABLE
+  ADOPTED
+  PENDING
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

@@ -1,13 +1,24 @@
 @import "tailwindcss";
 
-:root {
-  --color-primary: #FF9A56;
+@theme {
+  --color-primary: #0D9488;
+  --color-primary-dark: #0F766E;
+  --color-secondary: #FDBA74;
+  --color-accent: #F0FDFA;
+  --color-text-main: #111827;
+  --color-text-muted: #6B7280;
+  --color-background: #FFFFFF;
 }
 
-.bg-primary {
-  background-color: var(--color-primary);
+/* Custom Utilities */
+.btn-primary {
+  @apply bg-primary text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-primary-dark transition-all transform hover:-translate-y-0.5;
 }
 
-.text-primary {
-  color: var(--color-primary);
+.btn-secondary {
+  @apply bg-white text-primary border-2 border-primary px-6 py-3 rounded-full font-semibold hover:bg-accent transition-all;
+}
+
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
 }

@@ -1,21 +1,25 @@
-import './globals.css';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: 'PetHub - Find Your Perfect Pet Companion',
-  description: 'Adopt pets, shop for pet accessories, and find nearby pet care services',
+  title: "PetHub - Adopt, Shop, Care",
+  description: "Your one-stop platform for pet adoption, shopping, and care.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="grow">
-          {children}
-        </main>
-        <Footer />
+      <body>
+        <AuthProvider>
+          <CartProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );
