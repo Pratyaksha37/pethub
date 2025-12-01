@@ -20,7 +20,7 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: "Invalid password" }), { status: 401 });
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, "secret_key", { expiresIn: "7d" });
+    const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET || "secret_key", { expiresIn: "7d" });
 
     return new Response(JSON.stringify({ message: "Login successful", token, user }), { status: 200 });
   } catch (error) {

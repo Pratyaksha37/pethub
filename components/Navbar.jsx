@@ -19,20 +19,27 @@ export default function Navbar() {
             </Link>
             <div className="hidden md:flex space-x-8 ml-12">
               <NavLink href="/">Home</NavLink>
-              <NavLink href="/faq">FAQ</NavLink>
+              {user && user.role === "USER" && <NavLink href="/faq">FAQ</NavLink>}
               {user && (
                 <>
-                  <NavLink href="/pets">Adopt</NavLink>
-                  <NavLink href="/shop">Shop</NavLink>
-                  <NavLink href="/care">Nearby Care</NavLink>
-                  <NavLink href="/dashboard">Dashboard</NavLink>
+                  {user.role === "USER" && (
+                    <>
+                      <NavLink href="/pets">Adopt</NavLink>
+                      <NavLink href="/shop">Shop</NavLink>
+                      <NavLink href="/care">Nearby Care</NavLink>
+                      <NavLink href="/dashboard">Profile</NavLink>
+                    </>
+                  )}
+                  {(user.role === "ADMIN" || user.role === "SUPERADMIN") && (
+                    <NavLink href="/admin">Admin Panel</NavLink>
+                  )}
                 </>
               )}
             </div>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            {user && (
+            {user && user.role === "USER" && (
               <Link href="/cart" className="relative text-gray-600 hover:text-primary transition p-2">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -88,14 +95,21 @@ export default function Navbar() {
         <div className="md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
           <div className="px-4 pt-2 pb-6 space-y-2">
             <MobileNavLink href="/">Home</MobileNavLink>
-            <MobileNavLink href="/faq">FAQ</MobileNavLink>
+            {user && user.role === "USER" && <MobileNavLink href="/faq">FAQ</MobileNavLink>}
             {user && (
               <>
-                <MobileNavLink href="/pets">Adopt</MobileNavLink>
-                <MobileNavLink href="/shop">Shop</MobileNavLink>
-                <MobileNavLink href="/care">Nearby Care</MobileNavLink>
-                <MobileNavLink href="/cart">Cart ({cartCount})</MobileNavLink>
-                <MobileNavLink href="/dashboard">Dashboard</MobileNavLink>
+                {user.role === "USER" && (
+                  <>
+                    <MobileNavLink href="/pets">Adopt</MobileNavLink>
+                    <MobileNavLink href="/shop">Shop</MobileNavLink>
+                    <MobileNavLink href="/care">Nearby Care</MobileNavLink>
+                    <MobileNavLink href="/cart">Cart ({cartCount})</MobileNavLink>
+                    <MobileNavLink href="/dashboard">Profile</MobileNavLink>
+                  </>
+                )}
+                {(user.role === "ADMIN" || user.role === "SUPERADMIN") && (
+                  <MobileNavLink href="/admin">Admin Panel</MobileNavLink>
+                )}
               </>
             )}
             <div className="pt-4 border-t border-gray-100 mt-4">

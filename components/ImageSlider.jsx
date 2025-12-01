@@ -26,6 +26,22 @@ const slides = [
         subtitle: "Find the best vets and parks near you.",
         cta: "Find Care",
         link: "/care"
+    },
+    {
+        id: 4,
+        image: "https://images.unsplash.com/photo-1571121989083-9b04eb8988ec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
+        title: "Small & Furry Friends",
+        subtitle: "Squirrels, hamsters, and more looking for a home.",
+        cta: "Adopt Small Pets",
+        link: "/pets"
+    },
+    {
+        id: 5,
+        image: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
+        title: "Aquatic Companions",
+        subtitle: "Dive into the world of fish and aquatic pets.",
+        cta: "View Fish",
+        link: "/pets"
     }
 ];
 
@@ -39,8 +55,16 @@ export default function ImageSlider() {
         return () => clearInterval(timer);
     }, []);
 
+    const nextSlide = () => {
+        setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    };
+
+    const prevSlide = () => {
+        setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    };
+
     return (
-        <div className="relative h-[600px] w-full overflow-hidden">
+        <div className="relative h-[600px] w-full overflow-hidden group">
             {slides.map((slide, index) => (
                 <div
                     key={slide.id}
@@ -73,17 +97,25 @@ export default function ImageSlider() {
                 </div>
             ))}
 
-            {/* Dots */}
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3">
-                {slides.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => setCurrent(index)}
-                        className={`w-3 h-3 rounded-full transition-all ${index === current ? "bg-white w-8" : "bg-white/50 hover:bg-white/80"
-                            }`}
-                    />
-                ))}
-            </div>
+            {/* Navigation Buttons */}
+            <button
+                onClick={prevSlide}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                aria-label="Previous Slide"
+            >
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <button
+                onClick={nextSlide}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                aria-label="Next Slide"
+            >
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
         </div>
     );
 }

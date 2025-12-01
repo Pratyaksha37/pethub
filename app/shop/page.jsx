@@ -59,7 +59,10 @@ const products = [
   }
 ];
 
+import { useState } from "react";
+
 export default function ShopPage() {
+  const [page, setPage] = useState(1);
   return (
     <AuthGuard>
       <div className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
@@ -74,10 +77,31 @@ export default function ShopPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
+            {products.slice((page - 1) * 9, page * 9).map((product) => (
               <ShopCard key={product.id} item={product} />
             ))}
           </div>
+
+          {/* Pagination */}
+          {products.length > 9 && (
+            <div className="flex justify-center mt-12 space-x-2">
+              <button
+                disabled={page === 1}
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                className="px-4 py-2 border rounded-lg disabled:opacity-50 hover:bg-gray-50"
+              >
+                Previous
+              </button>
+              <span className="px-4 py-2 text-gray-600 font-medium">Page {page} of {Math.ceil(products.length / 9)}</span>
+              <button
+                disabled={page === Math.ceil(products.length / 9)}
+                onClick={() => setPage(p => Math.min(Math.ceil(products.length / 9), p + 1))}
+                className="px-4 py-2 border rounded-lg disabled:opacity-50 hover:bg-gray-50"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </AuthGuard>

@@ -7,17 +7,32 @@ export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("USER"); // Default to Customer (USER)
   const [error, setError] = useState("");
   const { login } = useAuth();
+
+  const validatePassword = (pwd) => {
+    const minLength = 8;
+    const hasLetter = /[a-zA-Z]/.test(pwd);
+    const hasNumber = /\d/.test(pwd);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
+    return pwd.length >= minLength && hasLetter && hasNumber && hasSpecial;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!validatePassword(password)) {
+      setError("Password must be at least 8 characters long and include a letter, a number, and a special character.");
+      return;
+    }
+
     try {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, role }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Signup failed");
@@ -70,6 +85,19 @@ export default function SignupPage() {
               />
             </div>
             <div>
+              <label htmlFor="role" className="sr-only">I am a...</label>
+              <select
+                id="role"
+                name="role"
+                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-shadow bg-white"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="USER">Customer (Looking to Adopt)</option>
+                <option value="ADMIN">Seller (Pet Shelter/Breeder)</option>
+              </select>
+            </div>
+            <div>
               <label htmlFor="password" className="sr-only">Password</label>
               <input
                 id="password"
@@ -82,6 +110,9 @@ export default function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <p className="mt-2 text-xs text-gray-500">
+                Must be at least 8 characters with a letter, number, and special character.
+              </p>
             </div>
           </div>
 

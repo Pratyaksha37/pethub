@@ -21,17 +21,11 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-6 text-white">Contact Us</h4>
             <p className="text-gray-400 mb-2">support@pethub.com</p>
-            <p className="text-gray-400">+1 (555) 123-4567</p>
-            <div className="mt-6 flex space-x-4">
-              {/* Social Icons Placeholder */}
-              <div className="w-8 h-8 bg-gray-800 rounded-full hover:bg-primary transition cursor-pointer"></div>
-              <div className="w-8 h-8 bg-gray-800 rounded-full hover:bg-primary transition cursor-pointer"></div>
-              <div className="w-8 h-8 bg-gray-800 rounded-full hover:bg-primary transition cursor-pointer"></div>
-            </div>
+            <p className="text-gray-400">+91 1234567890</p>
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-          &copy; {new Date().getFullYear()} PetHub. All rights reserved.
+          PetHub. All rights reserved.
         </div>
       </div>
     </footer>

@@ -15,17 +15,25 @@ model User {
   role         Role          @default(USER)
   createdAt    DateTime      @default(now())
   applications Application[]
+  pets         Pet[]
 }
 
 model Pet {
   id          Int           @id @default(autoincrement())
   name        String
   breed       String
-  age         Int
+  age         String
   size        String
+  gender      String        @default("Unknown")
+  color       String        @default("Unknown")
+  vaccinated  Boolean       @default(false)
+  neutered    Boolean       @default(false)
+  type        String        @default("Dog")
   description String
   image       String
   status      PetStatus     @default(AVAILABLE)
+  ownerId     Int           @default(1) // Temporary default for migration
+  owner       User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   applications Application[]
@@ -38,8 +46,8 @@ model Application {
   status    ApplicationStatus @default(PENDING)
   message   String?
   createdAt DateTime          @default(now())
-  user      User              @relation(fields: [userId], references: [id])
-  pet       Pet               @relation(fields: [petId], references: [id])
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pet       Pet               @relation(fields: [petId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
