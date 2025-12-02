@@ -67,3 +67,15 @@ enum ApplicationStatus {
   APPROVED
   REJECTED
 }
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  price       Float
+  description String
+  imageUrl    String
+  inStock     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

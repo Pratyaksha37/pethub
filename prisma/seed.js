@@ -121,6 +121,63 @@ async function main() {
         })
     }
 
+    // Seed Products
+    await prisma.product.deleteMany({}); // Clear existing products
+    const products = [
+        {
+            name: "Premium Dog Food",
+            category: "Food",
+            price: 49.99,
+            description: "High-quality, grain-free dog food for all breeds. Rich in protein and essential nutrients.",
+            imageUrl: "https://images.unsplash.com/photo-1589924691195-41432c84c161?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            inStock: true,
+        },
+        {
+            name: "Cozy Cat Bed",
+            category: "Bedding",
+            price: 34.50,
+            description: "Ultra-soft and comfortable bed for your feline friend. Machine washable cover.",
+            imageUrl: "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            inStock: true,
+        },
+        {
+            name: "Interactive Dog Toy",
+            category: "Toys",
+            price: 15.99,
+            description: "Durable toy perfect for chewers. Keeps your dog entertained for hours.",
+            imageUrl: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            inStock: true,
+        },
+        {
+            name: "Cat Scratching Post",
+            category: "Furniture",
+            price: 45.00,
+            description: "Sturdy scratching post with sisal rope. Protects your furniture from scratches.",
+            imageUrl: "https://images.unsplash.com/photo-1545249390-6bdfa286032f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            inStock: true,
+        },
+        {
+            name: "Pet Grooming Kit",
+            category: "Grooming",
+            price: 29.99,
+            description: "Complete set of grooming tools including brush, nail clipper, and shampoo.",
+            imageUrl: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            inStock: false,
+        },
+        {
+            name: "Automatic Feeder",
+            category: "Accessories",
+            price: 89.99,
+            description: "Programmable feeder to ensure your pet is fed on time, every time.",
+            imageUrl: "https://images.unsplash.com/photo-1585846416120-3a7354ed7d65?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            inStock: true,
+        }
+    ];
+
+    for (const product of products) {
+        await prisma.product.create({ data: product });
+    }
+
     console.log('Seed data inserted successfully.')
 }
 

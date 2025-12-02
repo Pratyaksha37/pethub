@@ -1,121 +1,365 @@
-🐾 PetHub – A Pet Adoption & Care Platform
+# PetHub 🐾
 
-PetHub is a full-stack Next.js platform that helps users explore pets, apply for adoption, and manage their profiles — while admins can add, update, and manage pet listings securely.
+A full-stack pet adoption and e-commerce application built with Next.js 16, Prisma, PostgreSQL, and React 19. This platform connects pets with potential adopters and provides a shop for pet supplies.
 
-👉 Live Project: https://pethub-89rl.vercel.app
+## 🚀 Features
 
-📘 Project Proposal
-Problem Statement
+### User Features
+- **Authentication System**: Secure JWT-based authentication with bcrypt password hashing.
+- **Pet Browsing**: Browse available pets for adoption with filtering by type, breed, and more.
+- **Adoption Applications**: Submit applications to adopt pets and track their status.
+- **Shop**: Browse pet products and supplies.
+- **Nearby Care**: Find veterinary clinics and pet care services near you using interactive maps.
+- **Responsive Design**: Mobile-friendly interface with a modern UI.
 
-People often struggle to find verified pet adoption sources or keep track of adoption-related information. Shelters and organizations also lack a centralized system to manage pet listings and interact with adopters.
+### Admin Features
+- **Dashboard**: Comprehensive overview of pets, applications, and users.
+- **Pet Management**: Add, edit, and remove pets from the platform.
+- **Application Management**: Review, approve, or reject adoption applications.
+- **User Management**: Manage user accounts and roles (Superadmin only).
 
-PetHub solves this by offering:
+## 📋 Tech Stack
 
-A unified space to browse pets, view details, and submit adoption applications.
+- **Frontend**: Next.js 16 (App Router), React 19
+- **Styling**: Tailwind CSS 4
+- **Backend**: Next.js API Routes
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT (JSON Web Tokens)
+- **Maps**: Leaflet / OpenStreetMap
 
-A secure dashboard for admins to manage pets and review adoption requests.
+## 🗂️ Project Structure
 
-The goal is to make adoption accessible, safe, and organized for everyone.
+```
+pethub/
+├── prisma/
+│   ├── schema.prisma          # Database schema
+│   └── seed.js                # Database seeding script
+├── app/
+│   ├── api/                   # API routes
+│   │   ├── auth/              # Authentication endpoints
+│   │   ├── pets/              # Pet management endpoints
+│   │   ├── applications/      # Application endpoints
+│   │   ├── products/          # Shop product endpoints
+│   │   ├── users/             # User management endpoints
+│   │   └── care/              # Nearby care endpoints
+│   ├── admin/                 # Admin dashboard
+│   ├── pets/                  # Pet listing and details
+│   ├── shop/                  # Product shop
+│   ├── dashboard/             # User dashboard
+│   ├── login/                 # Login page
+│   └── signup/                # Signup page
+├── components/                # React components
+│   ├── Navbar.jsx
+│   ├── Footer.jsx
+│   ├── PetCard.jsx
+│   ├── ShopCard.jsx
+│   └── AuthGuard.jsx
+└── public/                    # Static assets
+```
 
-🏗 System Architecture
-Next.js (Fullstack: Pages + API Routes) → Prisma ORM → PostgreSQL
+## 🛣️ API Routes
 
-App Logic
+### Authentication
+- **POST /api/auth/signup**: Create a new user account.
+- **POST /api/auth/login**: Authenticate user and receive JWT token.
 
-Next.js App Router
+### Pets
+- **GET /api/pets**: Get a list of pets with pagination and filtering.
+- **POST /api/pets**: Create a new pet listing (Admin only).
+- **GET /api/pets/[id]**: Get a single pet's details.
+- **PUT /api/pets/[id]**: Update a pet listing (Admin only).
+- **DELETE /api/pets/[id]**: Delete a pet listing (Admin only).
 
-TailwindCSS for UI
+### Applications
+- **GET /api/applications**: Get all applications (Admin) or user's applications.
+- **POST /api/applications**: Submit a new adoption application.
+- **PUT /api/applications/[id]**: Update application status (Admin only).
 
-Next.js API Routes for backend logic
+### Products
+- **GET /api/products**: Get a list of products with pagination and sorting.
 
-JWT-based authentication
+### Users
+- **GET /api/users**: Get a list of users (Superadmin only).
+- **DELETE /api/users/[id]**: Delete a user (Superadmin only).
 
-Database
+## 📬 Postman / API Usage Examples
 
-PostgreSQL (Prisma ORM)
+Here are the details for testing the API endpoints using Postman or cURL.
 
-Connected through Prisma Data Proxy / Accelerate
+### Authentication
 
-Hosting
+**Signup**
+- **URL**: `http://localhost:3000/api/auth/signup`
+- **Method**: `POST`
+- **Body** (JSON):
+  ```json
+  {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "securepassword123",
+    "role": "USER"
+  }
+  ```
 
-Entire application deployed on Vercel
+**Login**
+- **URL**: `http://localhost:3000/api/auth/login`
+- **Method**: `POST`
+- **Body** (JSON):
+  ```json
+  {
+    "email": "john@example.com",
+    "password": "securepassword123"
+  }
+  ```
+- **Response**: Returns a `token`. Use this token in the `Authorization` header for protected routes: `Bearer <your_token>`.
 
-Database hosted via Prisma
+### Pets
 
-⭐ Key Features
-🔐 Authentication & Authorization
+**Get All Pets**
+- **URL**: `http://localhost:3000/api/pets?page=1&limit=9&sort=newest`
+- **Method**: `GET`
+- **Response**: Returns a list of pets with pagination metadata.
 
-Signup, login, and logout
+**Get Single Pet**
+- **URL**: `http://localhost:3000/api/pets/[id]`
+- **Method**: `GET`
+- **Response**: Returns details of a specific pet.
 
-JWT-based authentication
+**Create Pet (Admin Only)**
+- **URL**: `http://localhost:3000/api/pets`
+- **Method**: `POST`
+- **Headers**: `Authorization: Bearer <token>`
+- **Body** (JSON):
+  ```json
+  {
+    "name": "Buddy",
+    "breed": "Golden Retriever",
+    "age": "2 years",
+    "size": "Large",
+    "type": "Dog",
+    "gender": "Male",
+    "color": "Golden",
+    "vaccinated": true,
+    "neutered": true,
+    "description": "Friendly and energetic dog.",
+    "image": "https://example.com/buddy.jpg",
+    "status": "AVAILABLE"
+  }
+  ```
 
-Role-based access (Admin / User)
+**Update Pet (Admin Only)**
+- **URL**: `http://localhost:3000/api/pets/[id]`
+- **Method**: `PUT`
+- **Headers**: `Authorization: Bearer <token>`
+- **Body** (JSON):
+  ```json
+  {
+    "status": "ADOPTED",
+    "age": "3 years"
+  }
+  ```
 
-🐶 Pet Listings (CRUD)
+**Delete Pet (Admin Only)**
+- **URL**: `http://localhost:3000/api/pets/[id]`
+- **Method**: `DELETE`
+- **Headers**: `Authorization: Bearer <token>`
+- **Response**: `{"message": "Pet deleted"}`
 
-Admins can:
+### Applications
 
-Add new pets
+**Get All Applications (Admin)**
+- **URL**: `http://localhost:3000/api/applications?page=1&limit=10&sort=newest`
+- **Method**: `GET`
+- **Headers**: `Authorization: Bearer <token>`
+- **Response**: Returns a list of adoption applications.
 
-Edit pet details
+**Submit Application**
+- **URL**: `http://localhost:3000/api/applications`
+- **Method**: `POST`
+- **Headers**: `Authorization: Bearer <token>`
+- **Body** (JSON):
+  ```json
+  {
+    "petId": 1,
+    "message": "I would love to adopt Buddy because..."
+  }
+  ```
 
-Delete listings
+**Update Application Status (Admin Only)**
+- **URL**: `http://localhost:3000/api/applications/[id]`
+- **Method**: `PUT`
+- **Headers**: `Authorization: Bearer <token>`
+- **Body** (JSON):
+  ```json
+  {
+    "status": "APPROVED"
+  }
+  ```
 
-Users can:
+### Users
 
-View all pets
+**Get All Users (Superadmin Only)**
+- **URL**: `http://localhost:3000/api/users?page=1&limit=10`
+- **Method**: `GET`
+- **Headers**: `Authorization: Bearer <token>`
+- **Response**: Returns a list of users.
 
-View pet details
+**Delete User (Superadmin Only)**
+- **URL**: `http://localhost:3000/api/users/[id]`
+- **Method**: `DELETE`
+- **Headers**: `Authorization: Bearer <token>`
+- **Body** (JSON):
+  ```json
+  {
+    "password": "superadmin_password"
+  }
+  ```
+- **Response**: `{"message": "User deleted successfully"}`
 
-📩 Adoption Management
+### Products
 
-Users can apply for adoption
+### Products
 
-Admins can review, approve, or reject applications
+**Get All Products**
+- **URL**: `http://localhost:3000/api/products?page=1&limit=9&sort=price_asc`
+- **Method**: `GET`
+- **Response**: Returns a list of products with pagination.
 
-Users can track their adoption history
+**Get Single Product**
+- **URL**: `http://localhost:3000/api/products/[id]`
+- **Method**: `GET`
+- **Response**: Returns details of a specific product.
 
-👤 Profile Management
+**Create Product (Admin Only)**
+- **URL**: `http://localhost:3000/api/products`
+- **Method**: `POST`
+- **Headers**: `Authorization: Bearer <token>`
+- **Body** (JSON):
+  ```json
+  {
+    "name": "Premium Dog Food",
+    "category": "Food",
+    "price": 49.99,
+    "description": "High-quality food for adult dogs.",
+    "imageUrl": "https://example.com/dogfood.jpg",
+    "inStock": true
+  }
+  ```
 
-View personal details
+**Update Product (Admin Only)**
+- **URL**: `http://localhost:3000/api/products/[id]`
+- **Method**: `PUT`
+- **Headers**: `Authorization: Bearer <token>`
+- **Body** (JSON):
+  ```json
+  {
+    "price": 45.99,
+    "inStock": false
+  }
+  ```
 
-View adoption applications
+**Delete Product (Admin Only)**
+- **URL**: `http://localhost:3000/api/products/[id]`
+- **Method**: `DELETE`
+- **Headers**: `Authorization: Bearer <token>`
+- **Response**: `{"message": "Product deleted"}`
 
-📍 Nearby Pet Care Centers
+## 🗄️ Database Schema
 
-Uses Google Maps API
+### User
+- **id**: Int (Primary Key)
+- **name**: String
+- **email**: String (Unique)
+- **password**: String (Hashed)
+- **role**: Enum (SUPERADMIN, ADMIN, USER)
+- **createdAt**: DateTime
 
-Displays nearby vet and pet-care centers
+### Pet
+- **id**: Int (Primary Key)
+- **name**: String
+- **breed**: String
+- **age**: String
+- **size**: String
+- **type**: String
+- **status**: Enum (AVAILABLE, ADOPTED, PENDING)
+- **ownerId**: Int (Foreign Key)
 
-☁ Hosting
+### Application
+- **id**: Int (Primary Key)
+- **userId**: Int (Foreign Key)
+- **petId**: Int (Foreign Key)
+- **status**: Enum (PENDING, APPROVED, REJECTED)
+- **message**: String
 
-Frontend + Backend: Vercel
+### Product
+- **id**: Int (Primary Key)
+- **name**: String
+- **category**: String
+- **price**: Float
+- **description**: String
+- **imageUrl**: String
+- **inStock**: Boolean
 
-Database: Prisma PostgreSQL
+## 🚀 Getting Started
 
-🧰 Tech Stack
-Layer	Technologies
-Framework	Next.js (App Router)
-UI	TailwindCSS
-Database	PostgreSQL (Prisma ORM)
-Backend	Next.js API Routes
-Auth	JWT
-Maps	Google Maps API
-Hosting	Vercel
-📡 API Overview
+### Prerequisites
+- Node.js 18+
+- PostgreSQL database
 
-Endpoint	Method	Description	Access
+### Installation
 
-| Endpoint               | Method | Description             | Access |
-| ---------------------- | ------ | ----------------------- | ------ |
-| `/api/auth/signup`     | POST   | Register user           | Public |
-| `/api/auth/login`      | POST   | Login user              | Public |
-| `/api/pets`            | GET    | Fetch pets              | Public |
-| `/api/pets/:id`        | GET    | Pet details             | Public |
-| `/api/pets`            | POST   | Add pet                 | Admin  |
-| `/api/pets/:id`        | PUT    | Update pet              | Admin  |
-| `/api/pets/:id`        | DELETE | Delete pet              | Admin  |
-| `/api/pets/:id/apply`  | POST   | Apply for adoption      | Auth   |
-| `/api/applications/me` | GET    | User’s applications     | Auth   |
-| `/api/applications`    | GET    | All applications        | Admin  |
-| `/api/care/nearby`     | GET    | Nearby pet-care centers | Auth   |
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd pethub
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables:**
+   Create a `.env` file and add your database URL and JWT secret:
+   ```env
+   DATABASE_URL="postgresql://user:password@localhost:5432/pethub"
+   JWT_SECRET="your-secret-key"
+   ```
+
+4. **Set up the database:**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   node prisma/seed.js  # Optional: Seed with initial data
+   ```
+
+5. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📜 Available Scripts
+
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run start`: Start production server
+- `npm run lint`: Run ESLint
+
+## 🔐 Security Features
+
+- **Password Hashing**: bcrypt for secure password storage.
+- **JWT Authentication**: Stateless authentication with JSON Web Tokens.
+- **Role-Based Access Control**: Protected routes and API endpoints for Admins and Superadmins.
+- **AuthGuard**: Client-side component to protect private routes.
+
+## 🎨 UI/UX Features
+
+- **Responsive Design**: Built with Tailwind CSS for all screen sizes.
+- **Interactive Maps**: Integrated Leaflet maps for finding nearby care.
+- **Dynamic Filtering**: Real-time filtering for pets and products.
+- **Toast Notifications**: User feedback for actions like login and application submission.
+
+## 📝 License
+
+This project is for educational purposes.

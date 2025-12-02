@@ -8,15 +8,38 @@ export async function GET(req) {
             return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 403 });
         }
 
-        const applications = await prisma.application.findMany({
-            include: {
-                user: { select: { name: true, email: true } },
-                pet: { select: { name: true, image: true } },
-            },
-            orderBy: { createdAt: "desc" },
-        });
+        const { searchParams } = new URL(req.url);
+        const page = parseInt(searchParams.get("page")) || 1;
+        const limit = parseInt(searchParams.get("limit")) || 10;
+        const skip = (page - 1) * limit;
+        const sort = searchParams.get("sort") || "newest";
 
-        return new Response(JSON.stringify(applications), { status: 200 });
+        const orderBy = {};
+        if (sort === "newest") orderBy.createdAt = "desc";
+        else if (sort === "oldest") orderBy.createdAt = "asc";
+
+        const [applications, total] = await prisma.$transaction([
+            prisma.application.findMany({
+                include: {
+                    user: { select: { name: true, email: true } },
+                    pet: { select: { name: true, image: true } },
+                },
+                orderBy,
+                skip,
+                take: limit,
+            }),
+            prisma.application.count(),
+        ]);
+
+        return new Response(JSON.stringify({
+            applications,
+            pagination: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
+            }
+        }), { status: 200 });
     } catch (error) {
         return new Response(JSON.stringify({ error: "Error fetching applications" }), { status: 500 });
     }
